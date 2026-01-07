@@ -72,11 +72,11 @@ export default function Cards({ cards = [], loadAllCard = () => { } }) {
                             {!isFlipped ?
                                 <div className="text-center">
                                     <p className="text-gray-400 mb-2">QUESTION</p>
-                                    <p>{card.question}</p>
+                                    <p className="font-semibold">{card.question}</p>
                                 </div> :
                                 <div className="text-center">
                                     <p className="text-gray-400 mb-2">ANSWER</p>
-                                    <p>{card.answer}</p>
+                                    <p className="text-green-600 font-semibold">{card.answer}</p>
                                 </div>
                             }
 

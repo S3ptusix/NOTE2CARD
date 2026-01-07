@@ -35,7 +35,7 @@ export default function Home() {
             <Topbar />
             <div className="grow mx-[10vw] py-4">
 
-                <GenerateFlashcards />
+                <GenerateFlashcards runFunction={loadAllDeck} />
 
                 <div>
                     <div className="flex items-center justify-between mb-4">

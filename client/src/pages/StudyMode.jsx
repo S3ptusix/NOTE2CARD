@@ -85,13 +85,19 @@ export default function StudyMode() {
                     Exit
                 </button>
             </div>
-            <div className="flex border border-gray-300 h-2 px-[10vw]">
-                {Array.from({ length: data.length }).map((_, i) => (
-                    <div key={i} className={`flex-1 ${(i <= page) ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
-                ))}
+            <div className="border border-gray-300 h-2 px-[10vw]">
+                <div className="bg-gray-300 h-full w-full">
+                    <div
+                        className="bg-blue-600 h-full duration-200"
+                        style={{ width: `${((page + 1) / data.length) * 100}%` }}
+                    >
+                    </div>
+                </div>
             </div>
-
-            <div className="flex-center grow m-[10vw]">
+            <div>
+                
+            </div>
+            <div className="flex-center grow my-4 mx-[10vw]">
                 <div
                     className="flex-center border border-gray-200 shadow-md p-8 rounded-lg min-h-80 w-full lg:w-[80%] cursor-pointer"
                     onClick={() => setFlipped(prev => !prev)}

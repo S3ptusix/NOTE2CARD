@@ -21,7 +21,7 @@ export default function EditCard({ cardId, onClose, runFunction = () => { } }) {
             };
             return toast.error(message);
         } catch (error) {
-            console.error('Error on handSubmit:', error);
+            console.error('Error on handleSubmit:', error);
         }
     }
 

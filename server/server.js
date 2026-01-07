@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { connectToDatabase } from './config/sequelize.js';
 import deckRouter from './routes/deckRoutes.js';
 import cardRouter from './routes/cardRoutes.js';
+import generateRouter from './routes/generateRoutes.js';
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(cors({
 
 app.use('/api/deck', deckRouter);
 app.use('/api/card', cardRouter);
+app.use('/api/generate', generateRouter);
 
 // TEST
 app.get('/', (req, res) => {
