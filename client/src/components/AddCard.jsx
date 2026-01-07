@@ -22,7 +22,7 @@ export default function AddCard({ deckId, onClose, runFunction = () => { } }) {
             };
             return toast.error(message, { toastId: "error-addCard" });
         } catch (error) {
-            console.error('Error on handSubmit:', error);
+            console.error('Error on handleSubmit:', error);
         }
     }
 
