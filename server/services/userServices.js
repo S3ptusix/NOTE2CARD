@@ -1,5 +1,6 @@
 import { Users } from "../models/fk.js";
 import bcrypt from "bcrypt";
+import { Op } from "sequelize";
 import { validateUsername, validatePassword, validateFullName } from "../utils/validate.js";
 
 import { createUserToken } from "../utils/token.js";
@@ -19,7 +20,6 @@ export const RegisterUserService = async (fullname, username, password) => {
         const formatedFullname = capitalizeWords(fixSpaces(fullname));
         const formatedUsername = username.trim().toLowerCase();
         const formatedPassword = password.trim();
-        console.log(formatedFullname)
 
         const fullnameError = validateFullName(formatedFullname);
         const usernameError = validateUsername(formatedUsername);
@@ -97,7 +97,7 @@ export const loginUserService = async (username, password) => {
 
         const token = createUserToken({
             id: user.id,
-            fullname: user.fullname, 
+            fullname: user.fullname,
             username: user.username
         });
 
@@ -111,3 +111,98 @@ export const loginUserService = async (username, password) => {
         return { success: false, message: "Server error" };
     }
 };
+
+// EDIT USER
+export const editUserService = async (
+    userId,
+    fullname,
+    username,
+    currentPassword,
+    newPassword
+) => {
+    try {
+        const user = await Users.findByPk(userId);
+        if (!user) {
+            return { success: false, message: "User not found" };
+        }
+
+        if (!fullname?.trim() || !username?.trim()) {
+            return {
+                success: false,
+                message: "Please complete all fields to proceed with account creation."
+            };
+        }
+
+        const formatedFullname = capitalizeWords(fixSpaces(fullname));
+        const formatedUsername = username.trim().toLowerCase();
+
+        const fullnameError = validateFullName(formatedFullname);
+        const usernameError = validateUsername(formatedUsername);
+
+        if (fullnameError) return { success: false, message: fullnameError };
+        if (usernameError) return { success: false, message: usernameError };
+
+        const existingUser = await Users.findOne({
+            where: {
+                username: formatedUsername,
+                id: { [Op.ne]: userId }
+            }
+        });
+
+        if (existingUser) {
+            return { success: false, message: "Username already in use" };
+        }
+
+        // Optional password update
+        if (newPassword?.trim()) {
+            if (!currentPassword?.trim()) {
+                return {
+                    success: false,
+                    message: "Please enter your current password to set a new password."
+                };
+            }
+
+            const passwordError = validatePassword(newPassword.trim());
+            if (passwordError) {
+                return { success: false, message: passwordError };
+            }
+
+            const isMatch = await bcrypt.compare(
+                currentPassword.trim(),
+                user.password
+            );
+
+            if (!isMatch) {
+                return {
+                    success: false,
+                    message: "Current password is incorrect."
+                };
+            }
+
+            user.password = await bcrypt.hash(newPassword.trim(), 10);
+        }
+
+        user.fullname = formatedFullname;
+        user.username = formatedUsername;
+
+        await user.save();
+
+        const token = createUserToken({
+            id: user.id,
+            fullname: user.fullname,
+            username: user.username
+        });
+
+        return {
+            success: true,
+            token
+        };
+
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message
+        };
+    }
+};
+

@@ -1,4 +1,4 @@
-import { loginUserService, RegisterUserService } from "../services/userServices.js";
+import { editUserService, loginUserService, RegisterUserService } from "../services/userServices.js";
 import { cookieOptions } from "../utils/cookie.js";
 
 // REGISTER USER
@@ -36,6 +36,28 @@ export const LoginUserController = async (req, res) => {
         return res.json({
             success: true,
             message: "Login successful"
+        });
+    } catch (error) {
+        console.error("Error on LoginUserController:", error);
+        return res.json({ success: false, message: "Server error" });
+    }
+};
+
+// EDIT USER
+export const editUserController = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { fullname, username, currentPassword, newPassword } = req.body;
+        const result = await editUserService(userId, fullname, username, currentPassword, newPassword);
+        if (!result.success) {
+            return res.json({ success: false, message: result.message })
+        }
+
+        res.cookie('userToken', result.token, cookieOptions);
+
+        return res.json({
+            success: true,
+            message: "Edit profile successful"
         });
     } catch (error) {
         console.error("Error on LoginUserController:", error);
