@@ -8,7 +8,7 @@ const deckRouter = express.Router();
 deckRouter.post('/add', authenticateUserJWT, addDeckController);
 
 // FETCH ALL DECK
-deckRouter.get('/fetchAll', fetchAllDeckController);
+deckRouter.get('/fetchAll', authenticateUserJWT, fetchAllDeckController);
 
 // FETCH ONE DECK
 deckRouter.get('/fetch/:deckId', fetchOneDeckController);

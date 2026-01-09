@@ -19,7 +19,7 @@ export const addDeck = async (formData) => {
 // FETCH ALL DECK
 export const fetchAllDeck = async (formData) => {
     try {
-        const response = await axios.get(`${API_URL}/api/deck/fetchAll`, formData);
+        const response = await axios.get(`${API_URL}/api/deck/fetchAll`, { formData, withCredentials: true });
         return response.data;
     } catch (error) {
         console.error('Error on fetchAllDeck:', error);

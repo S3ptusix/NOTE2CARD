@@ -1,10 +1,17 @@
-import { Decks, Cards } from "../models/fk.js";
+import { Decks, Cards, Users } from "../models/fk.js";
 import { generateFlashcard } from "../gemini/gemini.js";
 import { isValidFlashcard } from "../utils/validate.js";
 
 // GENERATE FLASHCARD
-export const generateFlashcardService = async (notes) => {
+export const generateFlashcardService = async (userId, notes) => {
     try {
+
+        const user = await Users.findOne({ where: { id: userId } });
+
+        if (!user) {
+            return { success: false, message: "User not found." };
+        }
+
         if (!notes?.trim()) {
             return { success: false, message: "Please enter a note." };
         }
@@ -17,7 +24,7 @@ export const generateFlashcardService = async (notes) => {
         }
 
         // Create deck in DB
-        const deck = await Decks.create({ deckName: flashcards.deck.title });
+        const deck = await Decks.create({ userId, deckName: flashcards.deck.title });
 
         // Prepare cards with deckId
         const cardsToCreate = flashcards.cards.map(card => ({

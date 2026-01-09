@@ -1,10 +1,15 @@
-import { Decks, Cards } from "../models/fk.js";
+import { Decks, Cards, Users } from "../models/fk.js";
 
 // ADD DECK
 export const addDeckService = async (userId, deckName) => {
     try {
-        if (!deckName) return { success: false, message: "Please enter a deck name." };
+        const user = await Users.findOne({ where: { id: userId } });
 
+        if (!user) {
+            return { success: false, message: "User not found." };
+        }
+
+        if (!deckName) return { success: false, message: "Please enter a deck name." };
 
         const deck = await Decks.create({ userId, deckName });
 
@@ -17,7 +22,7 @@ export const addDeckService = async (userId, deckName) => {
 };
 
 // FETCH ALL DECK
-export const fetchAllDeckService = async () => {
+export const fetchAllDeckService = async (userId) => {
     try {
         const decks = await Decks.findAll({
             attributes: ["id", "deckName"],
@@ -27,6 +32,7 @@ export const fetchAllDeckService = async () => {
                     attributes: ["id", "question", "answer"]
                 },
             ],
+            where: { userId }
         });
 
         return {

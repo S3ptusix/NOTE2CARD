@@ -16,7 +16,8 @@ export const addDeckController = async (req, res) => {
 // FETCH ALL DECK
 export const fetchAllDeckController = async (req, res) => {
     try {
-        const result = await fetchAllDeckService();
+        const userId = req.user.id;
+        const result = await fetchAllDeckService(userId);
         return res.json(result);
     } catch (error) {
         console.error("Error on fetchAllDeckController:", error);
