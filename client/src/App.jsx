@@ -5,6 +5,7 @@ import ViewCards from "./pages/ViewCards"
 import StudyMode from "./pages/StudyMode"
 import LandingPage from "./pages/LandingPage"
 import ProtectedRoute from "./components/ProtectedRoute"
+import UserProtectedRoute from "./components/UserProtectedRoute"
 
 function App() {
 
@@ -19,7 +20,7 @@ function App() {
         theme="dark"
       />
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<UserProtectedRoute><LandingPage /></UserProtectedRoute>} />
 
         <Route path="/app" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/app/viewCards/:deckId" element={<ProtectedRoute><ViewCards /></ProtectedRoute>} />

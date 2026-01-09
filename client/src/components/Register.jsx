@@ -1,9 +1,13 @@
 import { Eye, EyeOff, X } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { handleRegister } from "../services/userServices";
 import { toast } from "react-toastify";
+import { loadUser } from "../services/authServices";
+import { UserContext } from "../context/AuthProvider";
 
 export default function Register({ onClose, switchModal = () => { } }) {
+
+    const { setUser } = useContext(UserContext);
 
     const [viewPassword, setViewPassword] = useState(false);
 
@@ -35,7 +39,9 @@ export default function Register({ onClose, switchModal = () => { } }) {
             const { success, message } = await handleRegister(userInput);
             if (success) {
                 onClose();
-                return toast.success(message);
+                const result = await loadUser();
+                setUser(result);
+                return
             };
             return toast.error(message);
         } catch (error) {
@@ -68,7 +74,7 @@ export default function Register({ onClose, switchModal = () => { } }) {
                 <input
                     name="username"
                     type="text"
-                    placeholder="Username123"
+                    placeholder="username123"
                     className="input w-full mb-4"
                     onChange={handleInputChange}
                 />
@@ -85,7 +91,7 @@ export default function Register({ onClose, switchModal = () => { } }) {
                         className="btn btn-square bg-transparent border-0 text-gray-400"
                         onClick={() => setViewPassword(prev => !prev)}
                     >
-                        {viewPassword ? <Eye /> : <EyeOff />}
+                        {viewPassword ? <EyeOff /> : <Eye />}
                     </button>
                 </div>
 

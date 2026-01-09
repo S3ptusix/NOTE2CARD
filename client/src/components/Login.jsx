@@ -69,7 +69,7 @@ export default function Login({ onClose, switchModal = () => { } }) {
                 <input
                     name="username"
                     type="text"
-                    placeholder="Username123"
+                    placeholder="username123"
                     className="input w-full mb-4"
                     onChange={handleInputChange}
                 />
@@ -87,7 +87,7 @@ export default function Login({ onClose, switchModal = () => { } }) {
                         className="btn btn-square bg-transparent border-0 text-gray-400"
                         onClick={() => setViewPassword(prev => !prev)}
                     >
-                        {viewPassword ? <Eye /> : <EyeOff />}
+                        {viewPassword ? <EyeOff /> : <Eye />}
                     </button>
                 </div>
 
