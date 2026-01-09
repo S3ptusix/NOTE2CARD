@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, Brain, Github, Linkedin, Mail, Target, Zap } from "lucide-react";
+import { ArrowRight, Brain, Github, Linkedin, Mail, Target, Zap } from "lucide-react";
 import Topbar from "../components/Topbar";
 import Login from "../components/Login";
 import Register from "../components/Register";
@@ -95,7 +95,7 @@ export default function LandingPage() {
                         {/* Main Content */}
                         <div className="text-center mb-8">
                             <div className="flex items-center justify-center gap-2 mb-4">
-                                <BookOpen className="w-6 h-6 text-blue-400" />
+                                <img src="/note2cardIcon.svg" className="h-8 w-8" alt="" />
                                 <span className="text-xl text-white">NOTE2CARD</span>
                             </div>
                             <p className="text-gray-300 text-lg mb-1">© 2026 Jahleel Casintahan</p>

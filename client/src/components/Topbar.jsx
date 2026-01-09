@@ -1,4 +1,4 @@
-import { BookOpen, LogOut, User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import Register from "./Register";
@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import EditProfile from "./EditProfile";
 
 export default function Topbar() {
-
 
     const { user, setUser } = useContext(UserContext);
 
@@ -35,7 +34,7 @@ export default function Topbar() {
         <div className="flex items-center justify-between px-[10vw] py-4 border-b border-gray-300">
 
             <Link to={user ? "/app" : "/"} className="flex gap-2 text-blue-600 items-center">
-                <BookOpen />
+                <img src="/note2cardIcon.svg" className="h-8 w-8" alt="" />
                 <p className="font-semibold text-lg">NOTE2CARD</p>
             </Link>
 

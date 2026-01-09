@@ -1,5 +1,5 @@
 import express from 'express';
-import { LoginUserController, logoutUserController, meUserController, RegisterUserController } from '../controllers/userControllers.js';
+import { editUserController, LoginUserController, logoutUserController, meUserController, RegisterUserController } from '../controllers/userControllers.js';
 import { authenticateUserJWT } from '../middleware/auth.js';
 
 const userRouter = express.Router();
@@ -7,8 +7,11 @@ const userRouter = express.Router();
 // REGISTER USER
 userRouter.post('/register', RegisterUserController);
 
-// // LOGIN USER
-userRouter.post('/login', LoginUserController );
+// LOGIN USER
+userRouter.post('/login', LoginUserController);
+
+// EDIT USER
+userRouter.put('/edit', authenticateUserJWT, editUserController);
 
 // USER ME
 userRouter.get('/me', authenticateUserJWT, meUserController);

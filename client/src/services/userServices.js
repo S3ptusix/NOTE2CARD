@@ -29,3 +29,17 @@ export const handleLogin = async (formData) => {
         };
     }
 };
+
+// EDIT USER PROFILE
+export const editProfile = async (formData) => {
+    try {
+        const response = await axios.put(`${API_URL}/api/user/edit`, formData, { withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.error('Error edit profile', error);
+        return {
+            success: false,
+            message: error.response?.data?.message || 'Failed to edit profile'
+        };
+    }
+};

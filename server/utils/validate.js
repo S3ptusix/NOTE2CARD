@@ -4,7 +4,9 @@ export const validateFullName = (name) => {
     if (typeof name !== "string") {
         return "Name must be a string";
     };
-
+    if (name.length < 4) {
+        return 'Name must be at least 4 characters long';
+    }
     // Only letters, spaces, hyphens, apostrophes
     const validPattern = /^[A-Za-z '-]+$/;
     if (!validPattern.test(name)) {

@@ -1,21 +1,23 @@
-/* eslint-disable no-unused-vars */
 import { Eye, EyeOff, X } from "lucide-react";
-import { use, useState } from "react";
+import { useContext, useState } from "react";
+import { toast } from "react-toastify";
+import { editProfile } from "../services/userServices";
+import { UserContext } from "../context/AuthProvider";
 
 export default function EditProfile({ onClose }) {
 
+    const { user } = useContext(UserContext);
+
     const [viewPassword, setViewPassword] = useState({
-        current: false,
         new: false,
-        confirm: false,
+        current: false,
     });
 
     const [userInput, setUserInput] = useState({
-        fullname: "",
-        username: "",
+        fullname: user.fullname || "",
+        username: user.username || "",
         currentPassword: "",
         newPassword: "",
-        confirmPassword: "",
     });
 
     const handleInputChange = (e) => {
@@ -25,7 +27,7 @@ export default function EditProfile({ onClose }) {
             e.target.value = value.toLowerCase().replace(/\s+/g, '');
         }
 
-        if (name === "password") {
+        if (name === "currentPassword" || name === "newPassword" || name === "confirmPassword") {
             e.target.value = value.replace(/\s+/g, '');
         }
 
@@ -36,9 +38,19 @@ export default function EditProfile({ onClose }) {
     };
 
     const handleSubmit = async () => {
-        console.log(userInput);
+        try {
+            const { success, message } = await editProfile(userInput);
+            if (success) {
+                return window.location.reload();
+            };
+            return toast.error(message);
+        } catch (error) {
+            console.error('Error on handleSubmit:', error);
+        }
     }
+
     return (
+
         <div className="modal-style">
             <div>
                 <div className="modal-title">
@@ -54,7 +66,8 @@ export default function EditProfile({ onClose }) {
                 <input
                     name="fullname"
                     type="text"
-                    placeholder="Nick her"
+                    placeholder="Jahleel Casintahan"
+                    value={userInput?.fullname}
                     className="input w-full mb-4"
                     onChange={handleInputChange}
                 />
@@ -64,6 +77,7 @@ export default function EditProfile({ onClose }) {
                     name="username"
                     type="text"
                     placeholder="username123"
+                    value={userInput?.username}
                     className="input w-full mb-4"
                     onChange={handleInputChange}
                 />
@@ -103,21 +117,6 @@ export default function EditProfile({ onClose }) {
                     </button>
                 </div>
 
-                <p className="text-sm text-gray-700 mb-2 font-semibold">Confirm Password</p>
-                <div className="input w-full outline-blue-600 mb-8">
-                    <input
-                        name="confirmPassword"
-                        type={viewPassword.confirm ? "text" : "password"}
-                        placeholder="••••••••"
-                        onChange={handleInputChange}
-                    />
-                    <button
-                        className="btn btn-square bg-transparent border-0 text-gray-400"
-                        onClick={() => setViewPassword(prev => ({ ...prev, confirm: !prev.confirm }))}
-                    >
-                        {viewPassword.confirm ? <EyeOff /> : <Eye />}
-                    </button>
-                </div>
                 <div className="grid grid-cols-2 gap-4">
                     <button
                         className="btn bg-white border-gray-300"

@@ -65,7 +65,7 @@ export default function Register({ onClose, switchModal = () => { } }) {
                 <input
                     name="fullname"
                     type="text"
-                    placeholder="Nick her"
+                    placeholder="Jahleel Casintahan"
                     className="input w-full mb-4"
                     onChange={handleInputChange}
                 />
